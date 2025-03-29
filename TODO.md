@@ -1,0 +1,6 @@
+# TODO List for Code-Patti (UNO Game)
+- [ ] Implement the deck system (`deck.py`)
+- [ ] Define player actions (`player.py`)
+- [ ] Manage game state (`game_state.py`)
+- [ ] Create helper functions (`utils.py`)
+- [ ] Set up unit tests (`tests/`)
