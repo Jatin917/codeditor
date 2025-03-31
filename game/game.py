@@ -57,7 +57,7 @@ class Game:
             if not self.check_winner():
                 self.next_turn()
         else:
-            print("⏳ No valid moves, drawing a card...")
+            print("No valid moves, drawing a card...")
             drawn_card = self.deck.draw_card()
             self.players[player].append(drawn_card)
             if Rules.is_valid_move(drawn_card, self.played_cards[-1]):
