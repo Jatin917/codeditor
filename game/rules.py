@@ -1,13 +1,13 @@
 class Rules:
-    VALID_COLORS = {'R', 'G', 'B', 'Y', 'W'}  # W for Wild
-    ACTION_CARDS = {'S': 'Skip', 'R': 'Reverse', 'P': 'Draw2', 'W': 'Wild', 'W4': 'WildDraw4'}
+    VALID_COLORS = {'R', 'G', 'B', 'Y', 'W', 'P'}  # W for Wild # P for Plus4
+    ACTION_CARDS = {'S': 'Skip', 'R': 'Reverse', 'P': 'Draw4', 'W': 'Wild'}
 
     @staticmethod
     def is_valid_move(card, top_card):
         """
         Check if the played card is valid based on UNO rules.
-        Card format: [C][N] where C is color (R, G, B, Y) and N is number/action (0-9, S, R, P, W, W4)
-        Wild cards: WR/WB/WG/WY (Wild Color), W4 (Wild Draw 4)
+        Card format: [C][N] where C is color (R, G, B, Y) and N is number/action (0-9, S, R, P, W)
+        Wild cards: WR/WB/WG/WY (Wild Color), PR/PB/PG/PY (Wild Draw 4), RP/BP/GP/YP (Draw 2)
         """
         if not top_card:
             return True  # First move is always valid
@@ -16,8 +16,9 @@ class Rules:
             return False
 
         def parse_card(card_str):
-            if card_str.startswith("W4"):
-                return ("W", "4")
+            if card_str.startswith("P"):
+                color = card_str[1:] if len(card_str) > 1 else ""
+                return ("P", color)
             elif card_str.startswith("W"):
                 color = card_str[1:] if len(card_str) > 1 else ""
                 return ("W", color)
@@ -29,7 +30,8 @@ class Rules:
         # Valid if same color, same value, or wild
         return (current_color == top_color or 
                 current_value == top_value or 
-                current_color == "W")
+                current_color == "W" or
+                current_color == "P")
 
     @staticmethod
     def apply_card_effect(card, game_state):
@@ -48,10 +50,10 @@ class Rules:
             game_state.skip_turn()
         elif 'R' in card:  # Reverse
             game_state.reverse_turn_order()
-        elif card.startswith("P") and not card.startswith("W"):  # Draw 2
-            game_state.next_player_draw(2)
-        elif card.startswith("W4"):  # Wild Draw 4
+        elif card.startswith("P") and not card.startswith("W"):  # Wild Draw 4 (PR, PB, PG, PY)
             game_state.next_player_draw(4)
+        elif card.endswith("P"):  # Draw 2 (RP, BP, GP, YP)
+            game_state.next_player_draw(2)
             game_state.set_next_color(None)  # Player chooses color later
         elif card.startswith("W"):  # Wild Color (WR, WB, WG, WY)
             game_state.set_next_color(card[1:] if len(card) > 1 else None)
@@ -70,6 +72,8 @@ class Rules:
             return None
         if card.startswith("W"):
             return "W"  # Wild
+        if card.endswith("P"):
+            return "2" # Draw 2  
         return card[0] if card[0] in Rules.VALID_COLORS else None
 
     @staticmethod
@@ -161,7 +165,7 @@ class Rules:
         """
         # Check if challenged player had any playable card of matching color
         last_card = game_state.get_last_played_card()
-        if not last_card or not last_card.startswith("W4"):
+        if not last_card or not last_card.startswith("P"):
             return False  # No +4 to challenge
 
         challenged_hand = game_state.get_player_hand(challenged)
@@ -191,8 +195,8 @@ class Rules:
         Returns:
             bool: True if stacking is allowed, False otherwise
         """
-        return (card1.startswith("P") and card2.startswith("P")) or \
-               (card1.startswith("W4") and card2.startswith("W4"))
+        return (card1.startswith("P") and card2.startswith("P")) or 
+               (card1.endswith("P") and card2.endswith("P") )
 
     @staticmethod
     def enforce_auto_penalty(card, game_state, player_hand):
@@ -261,8 +265,8 @@ if __name__ == "__main__":
     Rules.apply_card_effect("RS", game_state)  # Skip
     Rules.apply_card_effect("RR", game_state)  # Reverse
     Rules.apply_card_effect("WR", game_state)  # Wild
-    Rules.apply_card_effect("P", game_state)   # +2
-    Rules.apply_card_effect("W4", game_state)  # +4
+    Rules.apply_card_effect("PR", game_state)   # +4
+    Rules.apply_card_effect("RP", game_state)  # +2
 
     print("\nTesting Deck and Draw:")
     deck = ["R3", "B4", "Y5"]
@@ -280,7 +284,7 @@ if __name__ == "__main__":
 
     print("\nTesting Stacking:")
     assert Rules.can_stack("RP", "BP") == True  # +2 can stack on +2
-    assert Rules.can_stack("W4", "W4") == True  # +4 can stack on +4
+    assert Rules.can_stack("PR", "PB") == True  # +4 can stack on +4
 
     print("\nTesting Auto Penalty:")
     Rules.enforce_auto_penalty("B9", game_state, ["R5", "G6"])  # Should penalize
