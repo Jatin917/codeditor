@@ -16,8 +16,7 @@ class Game:
 
     def next_turn(self):
         """Move to the next player's turn."""
-        self.current_player = (self.current_player + self.direction) % len(
-            self.players)
+        self.current_player = (self.current_player + self.direction) % len(self.players)
 
     def skip_turn(self):
         """Skip the next player's turn."""

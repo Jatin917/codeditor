@@ -26,7 +26,7 @@ def main():
             game.players[current_player].append(game.deck.draw_card())
             print(f"Player {current_player} drew a card.")
         elif move in player_hand:
-            if game.play_turn(move):  # Ensure turn is processed
+            if game.play_turn(current_player, move):  # Ensure turn is processed
                 continue  # Move to next player
         else:
             print("Invalid move! Try again.")
