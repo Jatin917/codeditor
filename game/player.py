@@ -8,6 +8,10 @@ class Player:
         """Initialize a player with an ID and a starting hand."""
         self.player_id = player_id
         self.hand = [deck.draw_card() for _ in range(7)]
+    
+    def get_card_count(self):
+        """return the no of card player has"""
+        return len(self.hand)
 
     def draw_card(self, deck, num_cards=1):
         """Draw a specified number of cards."""
