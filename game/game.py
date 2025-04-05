@@ -11,7 +11,18 @@ class Game:
             i: [self.deck.draw_card() for _ in range(7)]
             for i in range(num_players)
         }
-        self.played_cards = [self.deck.draw_card()]
+        first_card = self.deck.draw_card()
+        temp_hold = []
+        # Keep drawing until you find a non-action card
+        while first_card in Rules.ACTION_CARDS:
+            temp_hold.append(first_card)
+            first_card = self.deck.draw_card()
+
+        # Put back skipped action cards and reshuffle the deck
+        self.deck.cards.extend(temp_hold)
+        random.shuffle(self.deck.cards)
+        self.played_cards = [first_card]
+
         self.current_player = 0
         self.direction = 1  # 1 for clockwise, -1 for counterclockwise
 
@@ -33,7 +44,7 @@ class Game:
         next_player = (self.current_player + self.direction) % len(self.players)
         for _ in range(num_cards):
             self.players[next_player].append(self.deck.draw_card())
-
+            
     def check_winner(self):
         """Check if a player has won the game."""
         for player, hand in self.players.items():

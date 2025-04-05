@@ -21,14 +21,22 @@ def main():
         move = input("Enter the card to play (or 'draw' to pick a card): ").strip().upper()
 
         if move == "DRAW":
-            game.players[current_player].append(game.deck.draw_card())
-            print(f"Player {current_player} drew a card.")
+            drawn_card = game.deck.draw_card()
+            game.players[current_player].append(drawn_card)
+            print(f"Player {current_player} drew {drawn_card}.")
+            if game.play_turn(current_player, drawn_card):
+                print("Updated Game State:", game.get_game_state())
+                continue  # Move to next player
+            else:
+                print("No playable card drawn. Turn ends.")
+                # next_turn already handled in play_turn if needed
         elif move in player_hand:
             if game.play_turn(current_player, move):  # Ensure turn is processed
                 print("Updated Game State:", game.get_game_state())
                 continue  # Move to next player
         else:
             print("Invalid move! Try again.")
+            continue  # Ask again without skipping
 
         # Check if the game has a winner
         if len(game.players[current_player]) == 0:

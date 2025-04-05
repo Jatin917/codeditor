@@ -1,3 +1,5 @@
+from game import Game
+
 class Rules:
     VALID_COLORS = {'R', 'G', 'B', 'Y', 'W', 'P'}  # W for Wild # P for Plus4
     ACTION_CARDS = {'S': 'Skip', 'R': 'Reverse', 'P': 'Draw4', 'W': 'Wild'}
@@ -7,7 +9,7 @@ class Rules:
         """
         Check if the played card is valid based on UNO rules.
         Card format: [C][N] where C is color (R, G, B, Y) and N is number/action (0-9, S, R, P, W)
-        Wild cards: WR/WB/WG/WY (Wild Color), PR/PB/PG/PY (Wild Draw 4), RP/BP/GP/YP (Draw 2)
+        Wild cards: WC/WC/WC/WC (Wild Color), PC/PC/PC/PC (Wild Draw 4), RP/BP/GP/YP (Draw 2)
         """
         if not top_card:
             return True  # First move is always valid
@@ -50,13 +52,29 @@ class Rules:
             game_state.skip_turn()
         elif 'R' in card:  # Reverse
             game_state.reverse_turn_order()
-        elif card.startswith("P") and not card.startswith("W"):  # Wild Draw 4 (PR, PB, PG, PY)
+        elif card.startswith("P") and not card.startswith("W"):  # Wild Draw 4 (PC, PC, PC, PC)
             game_state.next_player_draw(4)
+            game_state.skip_turn()
+            game_state.prompt_color_choice("P") #Player chooses a color
         elif card.endswith("P"):  # Draw 2 (RP, BP, GP, YP)
             game_state.next_player_draw(2)
-            game_state.set_next_color(None)  # Player chooses color later
-        elif card.startswith("W"):  # Wild Color (WR, WB, WG, WY)
-            game_state.set_next_color(card[1:] if len(card) > 1 else None)
+            game_state.skip_turn()
+        elif card.startswith("W"):  # Wild Color (WC, WC, WC, WC)
+            game_state.prompt_color_choice("W") #Player chooses a color
+
+        def prompt_color_choice(self,action):
+        chosen_color = input("Choose a color [R, G, B, Y]: ").strip().upper()
+        while chosen_color not in {'R', 'G', 'B', 'Y'}:
+            chosen_color = input("Invalid color. Choose from [R, G, B, Y]: ").strip().upper()
+        self.set_next_color(chosen_color,action)
+
+    
+        def set_next_color(self, color,action):
+        self.current_top_card = action + color  # e.g. WC to represent Wild Red 
+        print(f"Color changed to {color}")
+            
+    
+    
 
     @staticmethod
     def is_special_card(card):
