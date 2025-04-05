@@ -213,8 +213,7 @@ class Rules:
         Returns:
             bool: True if stacking is allowed, False otherwise
         """
-        return (card1.startswith("P") and card2.startswith("P")) or 
-               (card1.endswith("P") and card2.endswith("P") )
+        return (card1.startswith("P") and card2.startswith("P")) or (card1.endswith("P") and card2.endswith("P") )
 
     @staticmethod
     def enforce_auto_penalty(card, game_state, player_hand):
