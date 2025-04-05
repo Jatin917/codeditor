@@ -1,9 +1,12 @@
 # helper function
 
 def is_next_uno(players, current_player, direction):
-    """Check if the next player has only one card (UNO)."""
-    next_player = (current_player + direction) % len(players)
+    keys = sorted(players.keys())
+    current_index = keys.index(current_player)
+    next_index = (current_index + direction) % len(keys)
+    next_player = keys[next_index]
     return len(players[next_player]) == 1
+
 
 def draw_cards(deck, player_hand, num_cards):
     """Draw a specified number of cards and add them to the player's hand."""
