@@ -19,8 +19,8 @@ class Deck:
             for action in actions:
                 deck.extend([f"{color}{action}"] * 2)
 
-        wild_cards = ['WR', 'WG', 'WB', 'WY']
-        plus_four_cards = ['PR', 'PG', 'PB', 'PY']
+        wild_cards = ['WC', 'WC', 'WC', 'WC']
+        plus_four_cards = ['PC', 'PC', 'PC', 'PC']
         deck.extend(wild_cards)
         deck.extend(plus_four_cards)
 

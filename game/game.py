@@ -44,7 +44,7 @@ class Game:
         next_player = (self.current_player + self.direction) % len(self.players)
         for _ in range(num_cards):
             self.players[next_player].append(self.deck.draw_card())
-
+            
     def check_winner(self):
         """Check if a player has won the game."""
         for player, hand in self.players.items():
