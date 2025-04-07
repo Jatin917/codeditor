@@ -52,7 +52,7 @@ class Player:
     def choose_color(self):
         colors = ['R', 'G', 'B', 'Y']
         chosen_color = random.choice(colors)
-        print(f"[PLAYER {self.current_player}] Choose color: {chosen_color}")
+        print(f"[PLAYER {self.player_id}] Choose color: {chosen_color}")
         return chosen_color
 
     def play_card(self, card, top_card, game):

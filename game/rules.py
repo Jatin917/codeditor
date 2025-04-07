@@ -43,7 +43,7 @@ class Rules:
 
 
     @staticmethod
-    def apply_card_effect(card, game_state):
+    def apply_card_effect(card, game_state, agent):
         """
         Apply the effect of action or wild cards to the game state.
         
@@ -62,12 +62,12 @@ class Rules:
         elif card.startswith("P") and not card.startswith("W"):  # Wild Draw 4 (PC, PC, PC, PC)
             game_state.next_player_draw(4)
             game_state.skip_turn()
-            game_state.prompt_color_choice("P", game_state) #Player chooses a color
+            game_state.prompt_color_choice("P", agent) #Player chooses a color
         elif card.endswith("P"):  # Draw 2 (RP, BP, GP, YP)
             game_state.next_player_draw(2)
             game_state.skip_turn()
         elif card.startswith("W"):  # Wild Color (WC, WC, WC, WC)
-            game_state.prompt_color_choice("W", game_state) #Player chooses a color
+            game_state.prompt_color_choice("W", agent) #Player chooses a color
 
 
     @staticmethod

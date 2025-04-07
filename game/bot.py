@@ -9,7 +9,7 @@ import random
 
 class Bot:
     def __init__(self, player_id):
-        self.id = player_id
+        self.player_id = player_id
     def is_valid_move(self, card, top_card):
         return Rules.is_valid_move(card, top_card)
 
@@ -58,7 +58,7 @@ class Bot:
     def choose_color(self):
         colors = ['R', 'G', 'B', 'Y']
         chosen_color = random.choice(colors)
-        print(f"[PLAYER {self.current_player}] Choose color: {chosen_color}")
+        print(f"[PLAYER {self.player_id}] Choose color: {chosen_color}")
         return chosen_color
 
     def __str__(self):

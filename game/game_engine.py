@@ -56,7 +56,7 @@ class Game:
             "direction": "clockwise" if self.direction == 1 else "counterclockwise"
         }
 
-    def play_turn(self, player, player_move=None):
+    def play_turn(self, player, player_move=None, agent=None):
         """Handle a player's move."""
         if player != self.current_player:
             print("Not your turn!")
@@ -65,7 +65,7 @@ class Game:
         if player_move and Rules.is_valid_move(player_move, self.played_cards[-1]):
             self.played_cards.append(player_move)
             self.players[player].remove(player_move)
-            Rules.apply_card_effect(player_move, self)
+            Rules.apply_card_effect(player_move, self, agent)
             if not self.check_winner():
                 self.next_turn()
         else:
@@ -77,13 +77,13 @@ class Game:
             self.next_turn()
 
     
-    def prompt_color_choice(self,action, game_state):
-        chosen_color = input("Choose a color [R, G, B, Y]: ").strip().upper()
-        # chosen_color = self.players[self.current_player].choose_color()
+    def prompt_color_choice(self,action, agent):
+        # chosen_color = input("Choose a color [R, G, B, Y]: ").strip().upper()
+        chosen_color = agent.choose_color()
         print(self.players[self.current_player], "choose color")
         while chosen_color not in {'R', 'G', 'B', 'Y'}:
-            chosen_color = input("Invalid color. Choose from [R, G, B, Y]: ").strip().upper()
-            # chosen_color = self.players[self.current_player].choose_color()
+            # chosen_color = input("Invalid color. Choose from [R, G, B, Y]: ").strip().upper()
+            chosen_color = agent.choose_color()
         self.set_next_color(chosen_color,action)
 
     

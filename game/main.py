@@ -24,7 +24,7 @@ def main():
             player_move = player.choose_card(game.players[0], top_card)
             print(f"Player plays: {player_move if player_move else 'draws a card'}")
             if player_move:
-                game.play_turn(0, player_move)
+                game.play_turn(0, player_move, player)
             else:
                 game.play_turn(0)
 
@@ -33,7 +33,7 @@ def main():
             bot_move = bot.choose_card(game.players[1], top_card)
             print(f"Bot plays: {bot_move if bot_move else 'draws a card'}")
             if bot_move:
-                game.play_turn(1, bot_move)
+                game.play_turn(1, bot_move, bot)
             else:
                 game.play_turn(1)
 
