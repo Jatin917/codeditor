@@ -1,5 +1,4 @@
-from game import Game
-
+# from game import Game
 class Rules:
     VALID_COLORS = {'R', 'G', 'B', 'Y', 'W', 'P'}  # W for Wild # P for Plus4
     ACTION_CARDS = {'S': 'Skip', 'R': 'Reverse', 'P': 'Draw4', 'W': 'Wild'}
@@ -19,21 +18,29 @@ class Rules:
 
         def parse_card(card_str):
             if card_str.startswith("P"):
+                # P card (like 'PY' or 'PR')
+                value = "P"
                 color = card_str[1:] if len(card_str) > 1 else ""
-                return ("P", color)
             elif card_str.startswith("W"):
+                # Wild card (like 'WR', 'WG')
+                value = "W"
                 color = card_str[1:] if len(card_str) > 1 else ""
-                return ("W", color)
-            return (card_str[0], card_str[1:] if len(card_str) > 1 else "")
+            else:
+                # Normal card (like 'R5', 'G2')
+                color = card_str[0] if len(card_str) > 1 else ""
+                value = card_str[1:] if len(card_str) > 1 else ""
+            return color, value
+
 
         current_color, current_value = parse_card(card)
         top_color, top_value = parse_card(top_card)
 
-        # Valid if same color, same value, or wild
-        return (current_color == top_color or 
-                current_value == top_value or 
-                current_color == "W" or
-                current_color == "P")
+        return (
+            current_color == top_color or
+            current_value == top_value or
+            current_value in {"W", "P"}  # wilds or plus-fours can always be played
+        )
+
 
     @staticmethod
     def apply_card_effect(card, game_state):
@@ -55,26 +62,13 @@ class Rules:
         elif card.startswith("P") and not card.startswith("W"):  # Wild Draw 4 (PC, PC, PC, PC)
             game_state.next_player_draw(4)
             game_state.skip_turn()
-            game_state.prompt_color_choice("P") #Player chooses a color
+            game_state.prompt_color_choice("P", game_state) #Player chooses a color
         elif card.endswith("P"):  # Draw 2 (RP, BP, GP, YP)
             game_state.next_player_draw(2)
             game_state.skip_turn()
         elif card.startswith("W"):  # Wild Color (WC, WC, WC, WC)
-            game_state.prompt_color_choice("W") #Player chooses a color
+            game_state.prompt_color_choice("W", game_state) #Player chooses a color
 
-        def prompt_color_choice(self,action):
-        chosen_color = input("Choose a color [R, G, B, Y]: ").strip().upper()
-        while chosen_color not in {'R', 'G', 'B', 'Y'}:
-            chosen_color = input("Invalid color. Choose from [R, G, B, Y]: ").strip().upper()
-        self.set_next_color(chosen_color,action)
-
-    
-        def set_next_color(self, color,action):
-        self.current_top_card = action + color  # e.g. WC to represent Wild Red 
-        print(f"Color changed to {color}")
-            
-    
-    
 
     @staticmethod
     def is_special_card(card):

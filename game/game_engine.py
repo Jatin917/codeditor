@@ -1,34 +1,28 @@
-
+import random
 from deck import Deck
 from rules import Rules
 
-
 class Game:
-
-    def __init__(self, num_players=4):
+    def __init__(self):
         self.deck = Deck()
-        self.players = {
-            i: [self.deck.draw_card() for _ in range(7)]
-            for i in range(num_players)
-        }
-        first_card = self.deck.draw_card()
-        temp_hold = []
-        # Keep drawing until you find a non-action card
-        while first_card in Rules.ACTION_CARDS:
-            temp_hold.append(first_card)
-            first_card = self.deck.draw_card()
-
-        # Put back skipped action cards and reshuffle the deck
-        self.deck.cards.extend(temp_hold)
-        random.shuffle(self.deck.cards)
-        self.played_cards = [first_card]
-
+        self.players = {0: [], 1: []}  # 0 = human, 1 = bot
         self.current_player = 0
-        self.direction = 1  # 1 for clockwise, -1 for counterclockwise
+        self.direction = 1
+        self.played_cards = []
+        self.initialize_hands()
+
+    def initialize_hands(self):
+        for pid in self.players:
+            self.players[pid] = [self.deck.draw_card() for _ in range(7)]
+        first_card = self.deck.draw_card()
+        while first_card[1:] in ["W", "WR"]:  # Avoid wilds as first card
+            self.deck.cards.append(first_card)
+            random.shuffle(self.deck.cards)
+            first_card = self.deck.draw_card()
+        self.played_cards.append(first_card)
 
     def next_turn(self):
-        """Move to the next player's turn."""
-        self.current_player = (self.current_player + self.direction) % len(self.players)
+        self.current_player = (self.current_player + 1) % 2
 
     def skip_turn(self):
         """Skip the next player's turn."""
@@ -82,9 +76,35 @@ class Game:
                 print(f"You drew {drawn_card}, and it can be played!")
             self.next_turn()
 
+    
+    def prompt_color_choice(self,action, game_state):
+        chosen_color = input("Choose a color [R, G, B, Y]: ").strip().upper()
+        # chosen_color = self.players[self.current_player].choose_color()
+        print(self.players[self.current_player], "choose color")
+        while chosen_color not in {'R', 'G', 'B', 'Y'}:
+            chosen_color = input("Invalid color. Choose from [R, G, B, Y]: ").strip().upper()
+            # chosen_color = self.players[self.current_player].choose_color()
+        self.set_next_color(chosen_color,action)
+
+    
+    def set_next_color(self, color, action):
+        print(action + color, "color+action")
+        self.played_cards[-1] = action + color  # <- correctly update top card
+        print(self.played_cards[-1], "current top card")
+        print(f"Color changed to {color}")
+
+    
+    def draw_card(self, player_name):
+        if self.turn_order[self.current_player_idx] != player_name:
+            return {'error': 'Not your turn'}
+        drawn_card = self.deck.draw_card()
+        self.players[player_name].append(drawn_card)
+        self.next_turn()
+        return {'message': 'Card drawn', 'card': drawn_card}
 
 # Example Usage
 if __name__ == "__main__":
     game = Game()
     print("Initial Player Hands:", game.get_game_state())
-    print("Top Card:", game.played_cards[-1])
+    # game.played_cards.append(game.deck.draw_card())  used it for just testing something
+    print("Top Card:", game.played_cards[-1], game.played_cards)

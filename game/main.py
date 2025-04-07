@@ -1,57 +1,45 @@
 
-from game import Game
-from utils import is_any_uno
+from game_engine import Game
+from bot import Bot
+from rules import Rules
+from playerSubmitted import Player  # <- Import player submission
 
 def main():
-    """Main function to run the UNO game."""
-    game = Game(num_players=4)
-
-    print("\n--- UNO Game Started! ---")
-    print("Initial Game State:", game.get_game_state())
+    game = Game()
+    bot = Bot(player_id=1)
+    player = Player(player_id=0)  # <- Create instance of player code
 
     while True:
-        current_player = game.current_player
-        player_hand = game.players[current_player]
+        state = game.get_game_state()
+        current_player = state["current_player"]
+        top_card = state["top_card"]
 
-        print(f"\nPlayer {current_player}'s Turn")
-        print(f"Your Hand: {player_hand}")
-        print(f"Top Card: {game.played_cards[-1]}")
+        print("\n---------------------------")
+        print(f"Top card on pile: {top_card}")
+        print(f"Your cards: {game.players[0]}")
+        print(f"Bot has {len(game.players[1])} cards.")
 
-        # Ask player for a move
-        move = input("Enter the card to play (or 'draw' to pick a card): ").strip().upper()
-
-        if move == "DRAW":
-            drawn_card = game.deck.draw_card()
-            game.players[current_player].append(drawn_card)
-            print(f"Player {current_player} drew {drawn_card}.")
-            if game.play_turn(current_player, drawn_card):
-                print("Updated Game State:", game.get_game_state())
-                continue  # Move to next player
+        if current_player == 0:
+            # Use player's bot logic
+            player_move = player.choose_card(game.players[0], top_card)
+            print(f"Player plays: {player_move if player_move else 'draws a card'}")
+            if player_move:
+                game.play_turn(0, player_move)
             else:
-                print("No playable card drawn. Turn ends.")
-                # next_turn already handled in play_turn if needed
-        elif move in player_hand:
-            if game.play_turn(current_player, move):  # Ensure turn is processed
-                print("Updated Game State:", game.get_game_state())
-                continue  # Move to next player
+                game.play_turn(0)
+
         else:
-            print("Invalid move! Try again.")
-            continue  # Ask again without skipping
+            # Predefined bot turn
+            bot_move = bot.choose_card(game.players[1], top_card)
+            print(f"Bot plays: {bot_move if bot_move else 'draws a card'}")
+            if bot_move:
+                game.play_turn(1, bot_move)
+            else:
+                game.play_turn(1)
 
-        # Check if the game has a winner
-        if len(game.players[current_player]) == 0:
-            print(f"\n🎉 Player {current_player} wins! 🎉")
+        # Check for winner
+        if game.check_winner():
             break
-
-        # Check if anyone has UNO
-        if is_any_uno(game.players):
-            print("\n⚠ Someone has UNO! ⚠")
-
-        # If the last played card was a "+2" or "+4", the next player is skipped
-        if game.played_cards[-1][1:] in ["P", "PR"]:
-            game.skip_turn()
-
-        print("Updated Game State:", game.get_game_state())
 
 if __name__ == "__main__":
     main()

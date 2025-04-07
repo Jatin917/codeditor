@@ -20,6 +20,7 @@ class Player:
     def play_card(self, card, top_card, game_state):
         """Attempt to play a card. If invalid, force player to draw a card."""
         if card in self.hand and game_state.rules.is_valid_move(card, top_card):
+            print("aya", card, top_card, game_state)
             self.hand.remove(card)
             game_state.played_cards.append(card)
             game_state.rules.apply_card_effect(card, game_state)
