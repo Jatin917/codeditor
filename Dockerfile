@@ -5,7 +5,7 @@ FROM python:3.10
 WORKDIR /app
 
 # Copy everything into the container
-COPY . .
+COPY ./game .
 
 # Install dependencies
 RUN pip install -r requirements.txt
@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 EXPOSE 10000
 
 # Run the Flask app
-CMD ["python", "./game/server.py"]
+CMD ["python", "server.py"]
