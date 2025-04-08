@@ -1,0 +1,22 @@
+[33mee19965[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mbotAutomation[m[33m)[m HEAD@{0}: commit: deleted unused files
+[33m51d34f8[m HEAD@{1}: commit: done with testing env
+[33m97a8cc7[m HEAD@{2}: commit: issue of asking bot for color solved
+[33m450e3ee[m HEAD@{3}: commit: code for testing the participants code
+[33m057ebe2[m[33m ([m[1;32mdev[m[33m)[m HEAD@{4}: checkout: moving from dev to botAutomation
+[33m057ebe2[m[33m ([m[1;32mdev[m[33m)[m HEAD@{5}: commit: deleted unused files
+[33m4f8eb17[m HEAD@{6}: checkout: moving from main to dev
+[33mf5bea27[m[33m ([m[1;32mmain[m[33m)[m HEAD@{7}: pull origin dev: updating HEAD
+[33mf5bea27[m[33m ([m[1;32mmain[m[33m)[m HEAD@{8}: checkout: moving from dev to main
+[33m4f8eb17[m HEAD@{9}: pull origin dev: Merge made by the 'ort' strategy.
+[33m6d712fe[m HEAD@{10}: commit: change
+[33mc8f9ca0[m HEAD@{11}: pull origin dev: Fast-forward
+[33mbbc8458[m HEAD@{12}: checkout: moving from main to dev
+[33mf5bea27[m[33m ([m[1;32mmain[m[33m)[m HEAD@{13}: checkout: moving from dev to main
+[33mbbc8458[m HEAD@{14}: checkout: moving from main to dev
+[33mf5bea27[m[33m ([m[1;32mmain[m[33m)[m HEAD@{15}: commit: chandes
+[33m26bc6f4[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{16}: pull: Fast-forward
+[33m62c0a28[m HEAD@{17}: checkout: moving from dev to main
+[33mbbc8458[m HEAD@{18}: pull origin dev: Fast-forward
+[33m62c0a28[m HEAD@{19}: checkout: moving from main to dev
+[33m62c0a28[m HEAD@{20}: commit: named files with their corresponding work... check inside file
+[33m5551b3b[m HEAD@{21}: clone: from https://github.com/tilakmangal/code-patti.git

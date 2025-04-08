@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 EXPOSE 10000
 
 # Run the Flask app
-CMD ["python", "server.py"]
+CMD ["python", "./game/server.py"]
