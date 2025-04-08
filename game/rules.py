@@ -273,11 +273,11 @@ if __name__ == "__main__":
     assert Rules.is_any_uno(game_state, [0, 1, 2]) == True
 
     print("\nTesting Special Cards:")
-    Rules.apply_card_effect("RS", game_state)  # Skip
-    Rules.apply_card_effect("RR", game_state)  # Reverse
-    Rules.apply_card_effect("WR", game_state)  # Wild
-    Rules.apply_card_effect("PR", game_state)   # +4
-    Rules.apply_card_effect("RP", game_state)  # +2
+    Rules.apply_card_effect("RS", game_state,)  # Skip
+    Rules.apply_card_effect("RR", game_state,)  # Reverse
+    Rules.apply_card_effect("WR", game_state,)  # Wild
+    Rules.apply_card_effect("PR", game_state,)   # +4
+    Rules.apply_card_effect("RP", game_state,)  # +2
 
     print("\nTesting Deck and Draw:")
     deck = ["R3", "B4", "Y5"]

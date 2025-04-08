@@ -1,10 +1,7 @@
-from player import Player
 from utils import draw_cards
 from deck import Deck
 from rules import Rules
 
-
-from rules import Rules
 import random
 
 class Bot:
@@ -65,19 +62,19 @@ class Bot:
         return f"[BOT] Player {self.player_id}: {self.hand}"
 
 
-# Example usage
-if __name__ == "__main__":
-    from game_engine import Game  # Now using the updated game file
+# # Example usage
+# if __name__ == "__main__":
+#     from game_engine import Game  # Now using the updated game file
 
-    deck = Deck()
-    game = Game(num_players=1)  # 1 human + 1 bot, assuming bot is player 1
+#     deck = Deck()
+#     game = Game(num_players=1)  # 1 human + 1 bot, assuming bot is player 1
 
-    # Replace one of the default players with our Bot
-    bot = Bot(1, deck)
-    game.players[1] = bot  # ✅ Store the whole Bot object, not just its hand
+#     # Replace one of the default players with our Bot
+#     bot = Bot(1, deck)
+#     game.players[1] = bot  # ✅ Store the whole Bot object, not just its hand
 
-    print(bot)
-    top_card = game.played_cards[-1]
-    print(f"Top card: {top_card}")
-    bot.make_move(top_card, game)
-    print(bot)
+#     print(bot)
+#     top_card = game.played_cards[-1]
+#     print(f"Top card: {top_card}")
+#     bot.make_move(top_card, game)
+#     print(bot)

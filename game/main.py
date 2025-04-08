@@ -1,3 +1,4 @@
+print("✅ main.py started")
 
 from game_engine import Game
 from bot import Bot
@@ -8,7 +9,6 @@ def main():
     game = Game()
     bot = Bot(player_id=1)
     player = Player(player_id=0)  # <- Create instance of player code
-
     while True:
         state = game.get_game_state()
         current_player = state["current_player"]
